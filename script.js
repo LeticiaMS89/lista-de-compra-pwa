@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     renderizarLista();
     carregarListasSalvas();
 });
+
 // --- Lógica de Produtos (Tela Principal) ---
 
 function adicionarProduto() {
@@ -76,25 +77,21 @@ function renderizarLista() {
     totalCompra.innerText = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
 }
 
-// --- FUNÇÃO ATUALIZADA: Confirmação antes de apagar um produto ---
 function removerProduto(id) {
-    // 1. Localiza o produto no array para descobrir o nome dele
     const produtoEncontrado = produtos.find(item => item.id === id);
     const nomeProduto = produtoEncontrado ? produtoEncontrado.nome : "este produto";
 
-    // 2. Abre a janelinha de confirmação (Sim = OK, Não = Cancelar)
     const confirmar = confirm(`Deseja realmente remover "${nomeProduto}" da sua lista?`);
     
-    // 3. Se o usuário clicar em "Cancelar" (Não), a função para aqui e não apaga
     if (!confirmar) return;
 
-    // 4. Se clicou em "OK" (Sim), remove o produto normalmente
     produtos = produtos.filter(item => item.id !== id);
     salvarListaAtual();
     renderizarLista();
     
     M.toast({ html: `"${nomeProduto}" foi removido!` });
 }
+
 function salvarListaAtual() {
     localStorage.setItem("listaAtual", JSON.stringify(produtos));
 }
@@ -209,24 +206,22 @@ function renomearLista(id) {
     M.toast({ html: `Lista renomeada para "${novoNome}"!` });
 }
 
-// --- FUNÇÃO ATUALIZADA: Confirmação antes de apagar uma lista do histórico ---
 function apagarListaSalva(id) {
     const listasSalvas = JSON.parse(localStorage.getItem("listasSalvas")) || [];
     const listaEncontrada = listasSalvas.find(lista => lista.id === id);
     const nomeLista = listaEncontrada ? listaEncontrada.nome : "esta lista";
 
-    // Janela de confirmação antes de deletar o backup do histórico
     const confirmar = confirm(`Tem certeza que deseja apagar permanentemente o histórico da lista "${nomeLista}"?`);
     
     if (!confirmar) return;
 
-    // Executa a remoção se confirmado
     const listasAtualizadas = listasSalvas.filter(lista => lista.id !== id);
     localStorage.setItem("listasSalvas", JSON.stringify(listasAtualizadas));
     
     carregarListasSalvas();
     M.toast({ html: 'Lista removida do histórico!' });
 }
+
 function apagarTodasAsListasSalvas() {
     const listasSalvas = JSON.parse(localStorage.getItem("listasSalvas")) || [];
     if (listasSalvas.length === 0) {
@@ -241,53 +236,11 @@ function apagarTodasAsListasSalvas() {
     }
 }
 
-function apagarTodoOHistorico() {
-    if (confirm("Tem certeza que deseja resetar TUDO? Isso apagará a lista atual e todo o histórico permanentemente.")) {
-        produtos = [];
-        salvarListaAtual();
-        renderizarLista();
-        localStorage.removeItem("listasSalvas");
-        carregarListasSalvas();
-        M.toast({ html: 'Todo o sistema foi reiniciado!' });
-    }
-}
-
 // --- Registro do Service Worker (PWA) ---
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('Service Worker ativo!'))
-      .catch(err => console.error('Erro no Service Worker:', err));
-  });
-}
-
-// --- LÓGICA DE MODO ESCURO ---
-
-function alternarModoEscuro() {
-    const body = document.body;
-    const checkbox = document.getElementById("toggleDarkMode");
-
-    // Se o checkbox foi marcado, liga o Dark Mode
-    if (checkbox.checked) {
-        body.classList.add("dark-mode");
-        localStorage.setItem("modoEscuro", "ativo");
-        M.toast({ html: 'Modo Escuro ativado!' });
-    } else {
-        body.classList.remove("dark-mode");
-        localStorage.setItem("modoEscuro", "inativo");
-        M.toast({ html: 'Modo Claro ativado!' });
-    }
-}
-
-function verificarTemaSalvo() {
-    const RichmondTema = localStorage.getItem("modoEscuro");
-    const checkbox = document.getElementById("toggleDarkMode");
-
-    if (RichmondTema === "ativo") {
-        document.body.classList.add("dark-mode");
-        if (checkbox) checkbox.checked = true; // Garante que o botão inicia "deslizado" para a direita
-    } else {
-        document.body.classList.remove("dark-mode");
-        if (checkbox) checkbox.checked = false;
-    }
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker ativo!'))
+            .catch(err => console.error('Erro no Service Worker:', err));
+    });
 }

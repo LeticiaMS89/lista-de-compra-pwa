@@ -71,7 +71,7 @@ body {
 .formulario-produto .btn-container {
   display: flex;
   align-items: center;
-  height: 70px; /* Alinha o botão "+" perfeitamente com a altura dos inputs */
+  height: 70px;
 }
 
 @media (max-width: 600px) {
@@ -79,10 +79,4 @@ body {
     height: auto;
     margin-top: 10px;
   }
-}
-/* --- ESTILOS DO MODO ESCURO --- */
-
-/* Transição suave para todas as trocas de cor */
-body, .container, table.striped tbody tr, .formulario-produto, .modal, .modal-content, .collection-item {
-  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
