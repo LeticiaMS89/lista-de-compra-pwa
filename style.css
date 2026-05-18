@@ -1,0 +1,88 @@
+body {
+  display: flex;
+  align-items: center;
+}
+
+.total-box {
+  margin-top: 25px;
+  text-align: right;
+}
+
+.total-box h5 {
+  font-weight: bold;
+  color: #1565c0;
+}
+
+.acoes {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.collection-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.botoes-lista {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+
+  .brand-logo {
+    font-size: 1.5rem !important;
+  }
+
+  .acoes {
+    flex-direction: column;
+  }
+
+  .acoes .btn {
+    width: 100%;
+  }
+
+  .total-box {
+    text-align: center;
+  }
+
+}
+
+/* Alinhamento da nova barra de inserção de produtos */
+.formulario-produto {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 20px 10px 10px 10px;
+  border-radius: 12px;
+  margin-bottom: 20px !important;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.formulario-produto .btn-container {
+  display: flex;
+  align-items: center;
+  height: 70px; /* Alinha o botão "+" perfeitamente com a altura dos inputs */
+}
+
+@media (max-width: 600px) {
+  .formulario-produto .btn-container {
+    height: auto;
+    margin-top: 10px;
+  }
+}
+/* --- ESTILOS DO MODO ESCURO --- */
+
+/* Transição suave para todas as trocas de cor */
+body, .container, table.striped tbody tr, .formulario-produto, .modal, .modal-content, .collection-item {
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
