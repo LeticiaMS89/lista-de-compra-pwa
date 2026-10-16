@@ -3,109 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- MELHORIA: Meta descrição para SEO e busca -->
+  <meta name="description" content="Aplicativo de Lista de Compras rápido e offline com suporte a PWA.">
+  
+  <!-- MELHORIA: Theme-color para personalizar a barra do navegador em dispositivos móveis (PWA) -->
+  <meta name="theme-color" content="#2196F3">
+
   <title>Lista de Compras</title>
+
+  <!-- CSS de Terceiros (Materialize CSS) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Manifest PWA e Estilos Próprios -->
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
+
+<!-- CORREÇÃO: Removida a tag <body> duplicada -->
 <body>
 
-  <body>
+  <!-- MELHORIA SEMÂNTICA: <header> para o topo da aplicação -->
+  <header class="container">
+    <h1 class="header-titulo">Minha Lista de Compras</h1>
+  </header>
 
-  <div class="container">
-    <h4>Minha Lista de Compras</h4>
+  <!-- MELHORIA SEMÂNTICA: <main> engloba todo o conteúdo principal -->
+  <main class="container">
     
-    <div class="row formulario-produto">
+    <!-- 
+      CORREÇÃO CRÍTICA: Envolto em tag <form>.
+      Permite enviar o formulário pressionando 'Enter' no teclado.
+    -->
+    <form id="formProduto" class="row formulario-produto">
+      
       <div class="input-field col s12 m5">
-        <input id="nomeProduto" type="text" class="validate">
+        <input id="nomeProduto" type="text" class="validate" required>
         <label for="nomeProduto">Nome do Produto</label>
       </div>
       
       <div class="input-field col s6 m2">
-        <input id="qtdProduto" type="number" value="1" min="1" class="validate">
+        <input id="qtdProduto" type="number" value="1" min="1" class="validate" required>
+        <!-- MELHORIA: Atributo 'for' pareado corretamente com o id do input -->
         <label for="qtdProduto" class="active">Qtd</label>
       </div>
       
       <div class="input-field col s6 m3">
-        <input id="valorProduto" type="number" step="0.01" min="0" class="validate">
-        <label for="valorProduto">Valor Unitário (R$)</label>
+        <input id="valorProduto" type="number" step="0.01" min="0" class="validate" placeholder="0,00">
+        <label for="valorProduto" class="active">Valor Unitário (R$)</label>
       </div>
       
       <div class="col s12 m2 btn-container">
-        <button class="btn blue waves-effect waves-light" onclick="adicionarProduto()" style="width: 100%; height: 45px;">
+        <!-- 
+          MELHORIA: Botão do tipo 'submit'. 
+          Removido estilo inline 'style="width: 100%"' e o onclick="adicionarProduto()".
+        -->
+        <button type="submit" id="btnAdicionar" class="btn blue waves-effect waves-light btn-full" aria-label="Adicionar Produto">
           <i class="material-icons">add</i>
         </button>
       </div>
-    </div>
 
-    <div class="row">
+    </form>
+
+    <!-- TABELA DE EXIBIÇÃO DE PRODUTOS -->
+    <section class="row">
       <div class="col s12 table-responsive">
-        <table class="striped">
+        <table class="striped highlight responsive-table">
           <thead>
             <tr>
               <th>Produto</th>
               <th>Qtd</th>
-              <th>Valor</th>
-              <th>Total</th>
-              <th>Ações</th>
+              <th>Valor Unitário</th>
+              <th>Total Item</th>
+              <th class="center-align">Ações</th>
             </tr>
           </thead>
+          <!-- O JavaScript injetará as linhas dinamicamente aqui -->
           <tbody id="listaProdutos"></tbody>
         </table>
       </div>
-    </div>
+    </section>
 
-    <div class="total-box">
+    <!-- PAINEL DE TOTAL DA COMPRA -->
+    <section class="total-box">
       <h5>Total da Compra: <span id="totalCompra">R$ 0,00</span></h5>
-    </div>
+    </section>
 
-    <div class="acoes-container" style="margin-top: 40px; clear: both;">
+    <!-- SEÇÃO DE AÇÕES DA LISTA (Salvar, Esvaziar, Histórico) -->
+    <section class="acoes-container">
       
-      <div class="row" style="margin-bottom: 15px;">
+      <div class="row row-nome-lista">
         <div class="input-field col s12 m6">
           <input id="nomeListaSalvar" type="text" placeholder="Ex: Compras do Mês, Churrasco...">
           <label for="nomeListaSalvar" class="active">Nome da Lista (Opcional)</label>
         </div>
       </div>
 
+      <!-- 
+        CORREÇÃO: Removidas todas as chamadas 'onclick="..."' dos botões.
+        As ações agora serão capturadas via addEventListener no script.js.
+      -->
       <div class="acoes">
-        <button class="btn green waves-effect waves-light" onclick="salvarLista()">
+        <button type="button" id="btnSalvarLista" class="btn green waves-effect waves-light">
           <i class="material-icons left">save</i> Salvar Lista
         </button>
 
-        <button class="btn orange darken-3 waves-effect waves-light" onclick="limparLista()">
-          <i class="material-icons left">remove_shopping_cart</i> Esvaziar Lista Atual
+        <button type="button" id="btnLimparAtual" class="btn orange darken-3 waves-effect waves-light">
+          <i class="material-icons left">remove_shopping_cart</i> Esvaziar Atual
         </button>
 
-        <button class="btn blue-grey darken-1 waves-effect waves-light modal-trigger" data-target="modalListas">
+        <button type="button" id="btnAbrirModalListas" class="btn blue-grey darken-1 waves-effect waves-light modal-trigger" data-target="modalListas">
           <i class="material-icons left">folder_open</i> Listas Salvas
         </button>
 
-        <button class="btn red waves-effect waves-light" onclick="apagarTodoOHistorico()">
-          <i class="material-icons left">delete_forever</i> Limpar Tudo (Sistema)
+        <button type="button" id="btnApagarHistorico" class="btn red waves-effect waves-light">
+          <i class="material-icons left">delete_forever</i> Limpar Tudo
         </button>
       </div>
 
-    </div>
-  </div>
+    </section>
 
+  </main>
+
+  <!-- MODAL: LISTAS SALVAS -->
   <div id="modalListas" class="modal">
     <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h4 style="margin: 0;">Listas Salvas</h4>
-        <button class="btn-flat red-text waves-effect" onclick="apagarTodasAsListasSalvas()" style="font-weight: 600;">
+      
+      <div class="modal-header">
+        <h4>Listas Salvas</h4>
+        <button type="button" id="btnApagarTodasSalvas" class="btn-flat red-text waves-effect btn-limpar-todas">
           <i class="material-icons left">delete_sweep</i> Apagar Todas
         </button>
       </div>
+
+      <!-- Lista de itens renderizada dinamicamente pelo JS -->
       <ul class="collection" id="listasSalvas"></ul>
+
     </div>
+    
     <div class="modal-footer">
-      <a href="#!" class="modal-close btn-flat">Fechar</a>
+      <!-- CORREÇÃO: Substituída a tag <a> com href="#!" por um <button type="button"> -->
+      <button type="button" class="modal-close btn-flat">Fechar</button>
     </div>
   </div>
 
+  <!-- SCRIPTS DA APLICAÇÃO -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
