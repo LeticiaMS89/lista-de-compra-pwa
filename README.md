@@ -82,7 +82,7 @@ Como a aplicação é desenvolvida em tecnologias nativas da Web (*Vanilla JS*),
 
 **Clone o repositório**:
    ```bash
-   git clone [https://github.com/seu-usuario/lista-de-compras-pwa.git](https://github.com/seu-usuario/lista-de-compras-pwa.git)
+   git clone (https://github.com/LeticiaMS89/lista-de-compra-pwa.git)
    ```
 
 1. Acesse a pasta do projeto:
