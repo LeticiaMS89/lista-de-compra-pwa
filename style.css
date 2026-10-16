@@ -1,50 +1,208 @@
-body {
-  display: flex;
-  align-items: center;
+/**
+ * ===================================================================
+ * LISTA DE COMPRAS PWA - STYLESHEET
+ * ===================================================================
+ * Design System moderno, responsivo e adaptado ao Materialize CSS.
+ */
+
+/* ===================================================================
+   1. VARIÁVEIS GLOBAIS (Design Tokens)
+   =================================================================== */
+:root {
+  /* Cores Principais */
+  --primary-color: #2196f3;
+  --primary-dark: #1565c0;
+  --success-color: #4caf50;
+  --warning-color: #ef6c00;
+  --danger-color: #f44336;
+
+  /* Cores Neutras de Fundo e Texto */
+  --bg-color: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #2c3e50;
+  --border-color: rgba(0, 0, 0, 0.08);
+
+  /* Bordas, Sombras e Transições */
+  --border-radius: 12px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.1);
+  --transition-fast: all 0.25s ease-in-out;
 }
 
+/* ===================================================================
+   2. ESTILOS BASE DA PÁGINA (BODY E ESTRUTURA)
+   =================================================================== */
+body {
+  /* 
+    CORREÇÃO: Organiza os elementos em coluna e garante que o corpo ocupe
+    no mínimo 100% da altura da tela, evitando quebras de layout no mobile.
+  */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Título do Topo */
+.header-titulo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 30px 0 20px 0;
+  text-align: center;
+}
+
+/* ===================================================================
+   3. FORMULÁRIO DE ADIÇÃO DE PRODUTOS
+   =================================================================== */
+.formulario-produto {
+  background: var(--card-bg);
+  padding: 20px 15px 10px 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 25px !important;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+/* Alinhamento vertical do botão "Adicionar" com os campos de texto */
+.formulario-produto .btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Espaçamento ajustado para harmonizar com o grid do Materialize */
+  padding-top: 10px;
+}
+
+/* Botão preenchendo a coluna por completo */
+.btn-full {
+  width: 100%;
+  height: 45px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===================================================================
+   4. TABELA DE PRODUTOS E TOTALIZADOR
+   =================================================================== */
+.table-responsive {
+  overflow-x: auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  background: var(--card-bg);
+}
+
+/* Card do Valor Total da Compra */
 .total-box {
   margin-top: 25px;
+  padding: 18px 24px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
   text-align: right;
+  border-left: 6px solid var(--primary-dark);
 }
 
 .total-box h5 {
-  font-weight: bold;
-  color: #1565c0;
+  margin: 0;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* ===================================================================
+   5. CONTAINER DE AÇÕES E BOTÕES
+   =================================================================== */
+.acoes-container {
+  margin-top: 35px;
+  clear: both;
+}
+
+.row-nome-lista {
+  margin-bottom: 15px;
 }
 
 .acoes {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 40px;
 }
 
-.table-responsive {
-  overflow-x: auto;
+/* Efeito moderno nos botões (Elevação suave ao passar o mouse) */
+.acoes .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  text-transform: none; /* Mantém o texto em caixa normal/capitalizada */
+  letter-spacing: 0.3px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
 }
 
+.acoes .btn:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ===================================================================
+   6. MODAL E ITENS DAS LISTAS SALVAS
+   =================================================================== */
+.modal {
+  border-radius: var(--border-radius);
+  max-width: 650px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.btn-limpar-todas {
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Estilização das linhas na coleção do modal */
 .collection-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  padding: 15px !important;
+  border-bottom: 1px solid var(--border-color) !important;
 }
 
 .botoes-lista {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
+/* ===================================================================
+   7. RESPONSIVIDADE (MOBILE - TELAS DE ATÉ 600px)
+   =================================================================== */
 @media (max-width: 600px) {
-
-  .brand-logo {
-    font-size: 1.5rem !important;
+  
+  .header-titulo {
+    font-size: 1.75rem;
+    margin: 20px 0 15px 0;
   }
 
+  /* No celular, os botões ocupam 100% da largura para facilitar o toque */
   .acoes {
     flex-direction: column;
   }
@@ -53,30 +211,28 @@ body {
     width: 100%;
   }
 
+  /* Alinha o total ao centro em telas pequenas */
   .total-box {
     text-align: center;
+    border-left: none;
+    border-top: 4px solid var(--primary-dark);
   }
 
-}
+  /* Ajusta os botões dentro das linhas do modal em telas pequenas */
+  .collection-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-/* Alinhamento da nova barra de inserção de produtos */
-.formulario-produto {
-  background: rgba(255, 255, 255, 0.5);
-  padding: 20px 10px 10px 10px;
-  border-radius: 12px;
-  margin-bottom: 20px !important;
-  border: 1px solid rgba(0, 0, 0, 0.03);
-}
+  .botoes-lista {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
 
-.formulario-produto .btn-container {
-  display: flex;
-  align-items: center;
-  height: 70px;
-}
-
-@media (max-width: 600px) {
   .formulario-produto .btn-container {
     height: auto;
     margin-top: 10px;
+    padding-top: 0;
   }
 }
